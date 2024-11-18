@@ -19,15 +19,17 @@ async create(createUserDto: CreateUserDto) {
 async findAll() {
   return this.userRepository.find(); 
 }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+async findOne(id: number) {
+    return await this.userRepository.findOne( { where :{id } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+    Object.assign(user, updateUserDto); 
+    return this.userRepository.save(user); 
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return  await this.userRepository.delete(id);
   }
 }
