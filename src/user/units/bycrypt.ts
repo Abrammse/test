@@ -5,6 +5,12 @@ export async function encodepassword ( password: string ){
 }
 
 
+export async function comparepassword ( password: string, hash:string ){    
+   return await bcrypt.compare(password, hash);
+}
+
+
+
    // return bcrypt.genSalt().then((salt)=>{
         //return bcrypt.hashSync(password, salt)
     //})

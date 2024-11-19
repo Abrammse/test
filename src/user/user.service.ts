@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { encodepassword } from './units/bycrypt';
+import { encodepassword,comparepassword } from './units/bycrypt';
 
 @Injectable()
 export class UserService {
@@ -32,6 +32,35 @@ async findOne(id: number) {
     Object.assign(user, updateUserDto); 
     return this.userRepository.save(user); 
   }
+
+  async login(username: string, password: string) {
+    console.log("Inside login");
+  
+    // Log the username to ensure it's being passed correctly
+    console.log("Username provided:", username);
+  
+    const user = await this.userRepository.findOne({
+      where: { username },
+    });
+  
+    if (user) {
+      console.log("User found:", user);
+  
+      // Check if the provided password matches the stored password
+      const matched = await comparepassword(password, user.password);
+  
+      if (matched) {
+        return user;
+      } else {
+        throw new Error('Incorrect password');
+      }
+    } else {
+      // If no user is found with the provided username
+      console.log("User not found in the database.");
+      throw new Error('User not found');
+    }
+  }
+  
 
   async remove(id: number) {
     return  await this.userRepository.delete(id);
