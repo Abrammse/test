@@ -20,7 +20,12 @@ export class User {
     @Column()
     username: string
 
+
+    @Column({ nullable: true })
+    image: string
+
+
     @DeleteDateColumn()
     deletedAt?: Date;
-}
 
+}

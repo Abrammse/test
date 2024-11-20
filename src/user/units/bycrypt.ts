@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 export async function encodepassword ( password: string ){
-     const SALT = await bcrypt.genSalt();
+     const SALT = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, SALT);
 }
 
