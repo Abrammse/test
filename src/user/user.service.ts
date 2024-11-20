@@ -33,6 +33,11 @@ async findOne(id: number) {
     return this.userRepository.save(user); 
   }
 
+  async delete (id: number) {
+    const deleteResponse = await this.userRepository.softDelete(id);
+    return deleteResponse
+  }
+  
   async login(username: string, password: string) {
     console.log("Inside login");
   
